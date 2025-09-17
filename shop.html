@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/pages/shop.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="js/cart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>  
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <title>FURNIO</title>
+
+    <style>
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #B88E2F;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            font-size: 12px;
+            text-align: center;
+            line-height: 18px;
+        }
+        .side-nav a {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const productContent = document.querySelector('.shop-product-container');
+        const paginationContainer = document.querySelector('.pagination');
+        const PRODUCTS_PER_PAGE = 6;
+        let currentPage = 1;
+        let allProducts = [];
+
+        if (!productContent) return;
+
+        function generateProductHTML(item) {
+            return `
+            <div class="shop-product">
+                <div class="wrapper">
+                <img src="${item.image || 'upload/products/default.png'}" alt="${item.name}" class="shop-product-image" />
+                <div class="shop-product-content">
+                    <button onclick="cart.addItem({type: '${item.slug}', name: '${item.name.replace(/'/g,"\\'")}', category: '${(item.category||'').replace(/'/g,"\\'")}', price: ${item.price}}); return false;">Add to cart</button>
+                </div>
+                </div>
+                <a href="single-product.html?id=${item.id}">
+                <div class="shop-product-info">
+                    <h3 class="product-name">${item.name}</h3>
+                    <p class="product-category">Type: ${item.category || 'General'}</p>
+                    <h3 class="product-price">Price: $${parseFloat(item.price).toFixed(2)}</h3>
+                </div>
+                </a>
+            </div>
+            `;
+        }
+
+        function displayProducts(products) {
+            const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+            const currentProducts = products.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+            productContent.innerHTML = currentProducts.map(generateProductHTML).join('');
+        }
+
+        function updatePagination(totalProducts) {
+            const totalPages = Math.ceil(totalProducts.length / PRODUCTS_PER_PAGE);
+            let html = '';
+            html += `<a href="#" class="prev" ${currentPage === 1 ? 'style="opacity:0.5;pointer-events:none;"' : ''}>Previous</a>`;
+            for (let i=1;i<=totalPages;i++){
+            html += `<a href="#" class="${currentPage===i?'active':''}">${i}</a>`;
+            }
+            html += `<a href="#" class="next" ${currentPage === totalPages ? 'style="opacity:0.5;pointer-events:none;"' : ''}>Next</a>`;
+            paginationContainer.innerHTML = html;
+
+            paginationContainer.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (link.classList.contains('prev')) {
+                if (currentPage > 1) currentPage--;
+                } else if (link.classList.contains('next')) {
+                if (currentPage < totalPages) currentPage++;
+                } else {
+                currentPage = parseInt(link.textContent) || 1;
+                }
+                displayProducts(allProducts);
+                updatePagination(allProducts);
+            });
+            });
+        }
+
+        // fetch products from API
+        fetch('api/get_products.php')
+            .then(r => r.json())
+            .then(data => {
+            allProducts = data.products || [];
+            displayProducts(allProducts);
+            updatePagination(allProducts);
+            })
+            .catch(err => {
+            console.error('Error loading products', err);
+            productContent.innerHTML = '<p>Error loading products</p>';
+            });
+    });
+</script>
+
+</head>
+<body>
+    <nav class="navbar common"> 
+        <img class="logo " src="upload/logo.svg" width="185px" height="41px"></img>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="side-nav">
+            <a href=""><img src="upload/icons/search.svg" alt="search-icon"></a>
+            <a href="cart.html">
+                <img src="upload/icons/cart.svg" alt="cart-icon">
+                <span class="cart-counter">0</span>
+            </a>
+        </div>
+    </nav>
+    <header class="common-header">
+            <img class="common-banner" style="height: max-content;" src="upload/shop_common_banner.svg" alt="blurred-background" class="blurred-background">    
+    </header>
+    <main>
+        <section class="shop-product-classification">
+            <div class="filter">
+                <i></i>
+                <p>Filter</p>
+            </div>
+            <div class="sort">
+                <h2 class="sort-by">Sort by</h2>
+                <select name="sort" id="sort">
+                    <option value="default">Default</option>
+                    <option value="price">Price</option>
+                    <option value="popularity">Popularity</option>
+                    <option value="rating">Rating</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="shop-product-section">
+            <div class="shop-product-container" >
+            </div>
+        </section>
+
+        <section class="common-shop-pagination">
+            <div class="pagination">
+                <a href="#" class="prev">Previous</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#" class="next">Next</a>
+            </div>
+        </section>
+
+        <section class="common-info-banner">
+            <img class="info-banner" src="upload/common_information.svg" alt="information banner">
+        </section>
+    </main>
+
+    <footer class="common footer">
+        <div class="footer-container">
+            <div class="footer-items">
+                <div class="footer-logo">
+                    <h3>FURNIO.</h3>
+                    <p>400 University Drive Suite 200 Coral Gables, <br>Fl3314 USA </p>
+                </div>
+                <div class="footer-nav-links">
+                    <p>Links</p>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <a href=""><p>Help</p></a>
+                    <a href=""><p>Payment Options</p></a>
+                    <a href=""><p>Returns</p></a>
+                    <a href=""><p>Privacy Policies</p></a>
+                </div>
+                <div class="footer-newsletter">
+                    <a href=""><p>Newsletter</p></a>
+                    <div>
+                        <input type="email" placeholder="Enter your email"> SUBSCRIBE
+                    </div>
+                </div>
+            </div><br>
+            <div class="footer-comp-rights">
+                <hr>
+                <p>2025 © FURNIO. All rights reserved.</p>
+            </div>
+        </div>
+        
+    </footer>
+</body>
+</html>

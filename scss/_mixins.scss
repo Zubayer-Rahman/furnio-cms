@@ -1,0 +1,68 @@
+@mixin animate($easing) {
+    -webkit-transition: $easing;
+    -ms-transition: $easing;
+    transition: $easing;
+}
+@mixin animation($animation) {
+    -webkit-animation: $animation;
+    -o-animation: $animation;
+    animation: $animation;
+}
+
+@mixin cover($cover) {
+    -webkit-background-size: $cover;
+    -ms-background-size: $cover;
+    background-size: $cover;
+}
+
+@mixin transform($transforms) {
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+@mixin translate($x,
+$y) {
+    @include transform(translate($x,
+    $y));
+}
+
+@mixin shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -ms-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > iframe {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    top: 20%;
+    @include translate(-50%,-20%);
+  }
+}
+@mixin mobile{
+  @media all and (max-width:#{$mobile}){
+    @content;
+  }
+}
+@mixin text-ellipsis($lines: 1) {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  @if ($lines > 1) {
+      display: -webkit-box;
+      -webkit-line-clamp: $lines;
+      -webkit-box-orient: vertical;
+  } @else {
+      white-space: nowrap;
+  }
+}

@@ -1,0 +1,154 @@
+{
+    "products": [
+        {
+            "type": "chair",
+            "name": "Ergonomic Office Pro",
+            "category": "Office Chairs",
+            "price": 299.99
+        },
+        {
+            "type": "lamp",
+            "name": "Modern Glow",
+            "category": "Table Lamps",
+            "price": 129.99
+        },
+        {
+            "type": "sofa5",
+            "name": "Royal Comfort XL",
+            "category": "Sectional Sofas",
+            "price": 1899.99
+        },
+        {
+            "type": "chair",
+            "name": "Dining Elite",
+            "category": "Dining Chairs",
+            "price": 199.99
+        },
+        {
+            "type": "table",
+            "name": "Rustic Oak",
+            "category": "Dining Tables",
+            "price": 799.99
+        },
+        {
+            "type": "sofa5",
+            "name": "Family Lounge Plus",
+            "category": "Corner Sofas",
+            "price": 2199.99
+        },
+        {
+            "type": "chair",
+            "name": "Nordic Ease",
+            "category": "Accent Chairs",
+            "price": 449.99
+        },
+        {
+            "type": "lamp",
+            "name": "Ambient Floor Light",
+            "category": "Floor Lamps",
+            "price": 249.99
+        },
+        {
+            "type": "sofa",
+            "name": "Urban Comfort",
+            "category": "Modern Sofas",
+            "price": 1599.99
+        },
+        {
+            "type": "chair",
+            "name": "Gaming Master",
+            "category": "Gaming Chairs",
+            "price": 399.99
+        },
+        {
+            "type": "lamp",
+            "name": "Desk Pro Light",
+            "category": "Desk Lamps",
+            "price": 89.99
+        },
+        {
+            "type": "sofa2",
+            "name": "Luxe Leather",
+            "category": "Leather Sofas",
+            "price": 2499.99
+        },
+        {
+            "type": "chair",
+            "name": "Bar Elite",
+            "category": "Bar Stools",
+            "price": 159.99
+        },
+        {
+            "type": "table",
+            "name": "Modern Minimalist",
+            "category": "Coffee Tables",
+            "price": 399.99
+        },
+        {
+            "type": "sofa2",
+            "name": "Comfort Recliner",
+            "category": "Reclining Sofas",
+            "price": 1799.99
+        },
+        {
+            "type": "chair",
+            "name": "Classic Dining",
+            "category": "Traditional Chairs",
+            "price": 179.99
+        },
+        {
+            "type": "lamp",
+            "name": "Crystal Pendant",
+            "category": "Pendant Lights",
+            "price": 299.99
+        },
+        {
+            "type": "sofa3",
+            "name": "Studio Compact",
+            "category": "Apartment Sofas",
+            "price": 999.99
+        },
+        {
+            "type": "chair",
+            "name": "Vintage Charm",
+            "category": "Vintage Chairs",
+            "price": 349.99
+        },
+        {
+            "type": "table",
+            "name": "Industrial Edge",
+            "category": "Side Tables",
+            "price": 249.99
+        },
+        {
+            "type": "sofa4",
+            "name": "Modern Sectional",
+            "category": "Designer Sofas",
+            "price": 2899.99
+        },
+        {
+            "type": "lamp",
+            "name": "Wall Sconce Elite",
+            "category": "Wall Lamps",
+            "price": 159.99
+        },
+        {
+            "type": "sofa4",
+            "name": "Cozy Loveseat",
+            "category": "Loveseats",
+            "price": 899.99
+        },
+        {
+            "type": "lamp",
+            "name": "Smart LED",
+            "category": "Smart Lighting",
+            "price": 199.99
+        },
+        {
+            "type": "sofa2",
+            "name": "Sleeper Elite",
+            "category": "Sofa Beds",
+            "price": 1699.99
+        }
+    ]
+}

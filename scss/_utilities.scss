@@ -1,0 +1,324 @@
+//Alignment
+.mr-auto {
+  margin-right: auto !important;
+}
+
+.ml-auto {
+  margin-left: auto !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.center-block {
+  display: block;
+  margin: 0 auto;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.align-self-center {
+  align-self: center !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+}
+
+.img-fluid,
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.img-round {
+  border-radius: 50%;
+}
+
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+
+  &-item {
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.py-5 {
+  padding: 100px 0;
+}
+.pb-5{
+  padding-bottom: 100px;
+}
+.pt-5{
+  padding-top: 100px;
+}
+.py-3 {
+  padding: 40px 0;
+}
+
+.mb-5 {
+  margin-bottom: 50px !important;
+}
+.mb-4 {
+  margin-bottom: 40px !important;
+}
+.mb-3 {
+  margin-bottom: 30px !important;
+}
+.mb-2 {
+  margin-bottom: 20px !important;
+}
+.m-0 {
+  margin: 0 !important;
+}
+.mr-3 {
+  margin-right: 30px !important;
+}
+.ml-3 {
+  margin-left: 30px !important;
+}
+.p-0{
+  padding: 0;
+}
+.pb-0{
+  padding-bottom: 0 !important;
+}
+.pt-0{
+  padding-top: 0 !important;
+}
+/*extend data*/
+%text {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+%extra {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+%line {
+  content: "";
+  height: 2px;
+  background: $brand-color;
+  width: 0;
+  display: inline-block;
+  margin-right: 0;
+  vertical-align: middle;
+  transition: all 0.5s linear;
+  transform: translateY(-2px);
+}
+
+%common-content {
+  font-weight: normal;
+  letter-spacing: 0.25px;
+  color: $text-color;
+  font-size: 15px;
+  line-height: 1.5rem;
+}
+
+%site-heading {
+  font-weight: 700;
+  color: $black;
+  font-size: 1.35rem;
+}
+
+%btn-link {
+  color: $brand-color;
+  text-transform: uppercase;
+  display: inline-flex;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+}
+
+%gradient-text {
+  background: linear-gradient(92deg, $white 0.45%, #43fff5 56.16%, #59ff4d 88.85%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+%clippath{
+  background: rgba(64, 151, 144, 0.50);
+  clip-path: polygon(10px 0%, 100% 0%, 100%  calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 100%, 0% 10px);
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    clip-path: inherit;
+    z-index: -1;
+  }
+}
+
+%heading {
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+  font-family: 'Chieezy Burger';
+  color: $brand-color;
+  text-align: center;
+  text-transform: uppercase;
+  max-width: 670px;
+  margin: 0 auto;
+}
+.lg-heading{
+  @extend %heading;
+  font-size: 72px;
+  line-height: 1;
+  margin: 0 auto 30px;
+  max-width: 850px;
+}
+%splash {
+  content: "";
+  width: 500px;
+  height: 500px;
+  border-radius: 600px;
+  background: rgba(0, 255, 234, 0.2);
+  filter: blur(150px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+%paragraph {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: $text-color;
+}
+
+%slick-bullet {
+  border: none;
+  font-size: 0;
+  padding: 0;
+  height: 12px;
+  width: 12px;
+  border-radius: 20px;
+  background: $gray;
+  cursor: pointer;
+  @extend .animate;
+}
+
+.btn-link {
+  @extend %btn-link;
+}
+
+.btn {
+  font-size: 16px;
+  border: 0;
+  font-weight: 600;
+  padding: 10px 20px;
+  position: relative;
+  z-index: 9;
+  color: $white;
+  letter-spacing: 0.35px;
+  cursor: pointer;
+  display: inline-block;
+  line-height: normal;
+  text-align: center;
+  background: $brand-color;
+  border-radius: 100px;
+}
+
+
+.animate {
+  @include animate(all 0.3s linear);
+}
+%slick-dot {
+  .slick-dots {
+    padding: 10px 5px;
+    margin: 50px auto 0;
+    background: rgba($black, 0.2);
+    line-height: 0;
+    border-radius: 30px;
+    display: inline-block;
+
+    li {
+      display: inline-flex;
+      margin: 0 10px;
+      padding: 0;
+      align-items: center;
+
+      button {
+        border: none;
+        font-size: 0;
+        padding: 0;
+        height: 14px;
+        width: 14px;
+        border-radius: 10px;
+        background: darken($off-white, 08);
+        @extend .animate;
+        cursor: pointer;
+      }
+
+      &.slick-active {
+        button {
+          background: $brand-color;
+        }
+      }
+    }
+  }
+}
+
+.sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  align-self: flex-start;
+  z-index: 9;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.error-msg {
+  color: $red !important;
+}
+
+label.error {
+  color: $red !important;
+  font-size: 12px;
+}
+
+@media all and (min-width: 768px) {
+  .xs-only {
+    display: none !important;
+  }
+}
+
+@media all and (max-width: 767px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .hide-xs {
+    display: none !important;
+  }
+}

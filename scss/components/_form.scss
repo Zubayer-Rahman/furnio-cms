@@ -1,0 +1,194 @@
+%radio-check {
+  display: block;
+  position: relative;
+  margin-bottom: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+%shape {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+  background: $white;
+  margin-right: 5px;
+  @extend .animate;
+
+}
+
+.checkbox {
+  @extend %radio-check;
+
+  a {
+    color: $brand-color;
+  }
+}
+
+.checkbox input,
+.radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  @extend %shape;
+  border-radius: 2px;
+  border: 1px solid $black;
+}
+
+.checkbox input:checked~.checkmark {
+  background: $black;
+  border: 1px solid $black;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox input:checked~.checkmark:after {
+  display: block;
+}
+
+.checkbox .checkmark:after {
+  left: 4px;
+  top: 0;
+  width: 6px;
+  height: 11px;
+  border: solid $white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+// Radio
+.radio {
+  @extend %radio-check;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.radio-mark {
+  @extend %shape;
+  @include shadow(0 0 0 2px $gray-dark inset);
+  border-radius: 50%;
+}
+
+.radio input:checked~.radio-mark {
+  @include shadow(0 0 0px 10px $brand-color inset);
+}
+
+select.form-control {
+  background-color: $white;
+  background-image: url("#{$img-path}/search-dropdown.svg");
+  background-position: calc(100% - 10px) center;
+  background-repeat: no-repeat;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none;
+  @include cover(12px);
+  font-size: 1rem;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .select-style select {
+    padding: 10px 10px;
+  }
+}
+
+select.form-control option {
+  background: #ebebeb none repeat scroll 0 0;
+  border: medium none;
+  color: #333333;
+  padding: 4px 0;
+}
+
+select.form-control option:hover {
+  color: #fff;
+}
+
+select.form-control:focus {
+  outline: medium none;
+  border: none;
+}
+
+.form {
+  &-label {
+    color: $black;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 12px;
+    padding: 0;
+    display: block;
+    width: 100%;
+    order: -1;
+    transition: 0.3s linear all;
+  }
+  &-control {
+    @extend .animate;
+    padding: 15px 15px;
+    resize: none;
+    color: $brand-color;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+    border-radius: 6px;
+    border: 1px solid rgba($brand-color, 0.05);
+    background: rgba(0, 109, 70, 0.05);
+    &:focus {
+      @include shadow(none);
+      outline: none !important;
+      border-color: $base-color;
+      & ~ .form-label{
+        color: $brand-color;
+      }
+    }
+
+    &::placeholder {
+      color: #9CA3AF;
+      opacity: 1;
+    }
+  }
+
+  &-group {
+    position: relative;
+    margin: 0 0 30px;
+  }
+
+  &-error {
+    .form-control {
+      border-color: $red;
+    }
+
+    .form-label {
+      color: $red;
+    }
+  }
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type="text"]:-webkit-autofill,
+input[type="tel"]:-webkit-autofill input[type="password"]:-webkit-autofill {
+  -webkit-background-clip: text;
+}

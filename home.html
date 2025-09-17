@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/pages/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="js/cart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>  
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <title>FURNIO</title>
+    
+    <style>
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #B88E2F;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            font-size: 12px;
+            text-align: center;
+            line-height: 18px;
+        }
+        .side-nav a {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productContent = document.querySelector('.product-container');
+            const PRODUCTS_PER_PAGE = 6;
+            let currentPage = 1;
+            let allProducts = [];
+
+            if (!productContent) {
+                console.error('Product container not found');
+                return;
+            }
+            
+            productContent.innerHTML = ''; 
+
+            // Function to generate HTML for a single product
+            function generateProductHTML(item) {
+                return `
+                <div class="product">
+                    <div class="wrapper">
+                        <img src="upload/products/${item.type}.webp" alt="${item.name}" class="product-image">
+                        <div class="product-content">
+                            <button onclick="cart.addItem({type: '${item.type}', name: '${item.name}', category: '${item.category}', price: ${item.price}}); return false;">Add to cart</button>
+                        </div>  
+                    </div>
+                    <a href="single-product.html" onclick="localStorage.setItem('itemName', '${item.name}'); localStorage.setItem('itemCategory', '${item.category}'); localStorage.setItem('itemPrice', '$${item.price.toFixed(2)}'); localStorage.setItem('itemImage', 'upload/products/${item.type}.webp');">
+                        <div class="product-info">
+                            <h3 class="product-name">${item.name}</h3>
+                            <p class="product-category">Type: ${item.category}</p>
+                            <h3 class="product-price">Price: $${item.price.toFixed(2)}</h3>
+                        </div>
+                    </a>
+                </div>`;
+            }
+
+            // Function to display products for current page
+            function displayProducts(products) {
+                const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+                const endIndex = startIndex + PRODUCTS_PER_PAGE;
+                const currentProducts = products.slice(startIndex, endIndex);
+                
+                let productsHTML = '';
+                currentProducts.forEach(item => {
+                    productsHTML += generateProductHTML(item);
+                });
+                productContent.innerHTML = productsHTML;
+            }
+
+
+            // Fetch products from JSON file
+            fetch('api/get_products.php')
+                .then(r => r.json())
+                .then(data => {
+                allProducts = data.products || [];
+                displayProducts(allProducts);
+                })
+                .catch(err => {
+                console.error('Error loading products', err);
+                productContent.innerHTML = '<p>Error loading products</p>';
+                });
+
+            // Add event listeners for cart buttons
+            document.querySelectorAll('.add-to-cart-button').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    console.log('Added to cart');
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar common"> 
+        <img class="logo " src="upload/logo.svg" width="185px" height="41px"></img>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="side-nav">
+            <a href=""><img src="upload/icons/search.svg" alt="search-icon"></a>
+            <a href="cart.html">
+                <img src="upload/icons/cart.svg" alt="cart-icon">
+                <span class="cart-counter">0</span>
+            </a>
+        </div>
+    </nav>
+    <main>
+        <header class="header">
+            <img src="upload/header-banner.webp" alt="banner_image" class="banner_image">
+            <div class="header-content">
+                <p>New Arrival</p>
+                <h1 class="main-header">Discover Our<br> New Collection</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur facere minus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur facere minus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur facere minus.</p>
+                <button  class="buy-btn">BUY NOW</button>
+            </div>
+        </header>
+
+        <section class="range">
+            <h2>Browse The Range</h2>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+
+            <div class="card-container">
+                <div class="card-items">
+                    <img src="upload/browse_image_one.svg" alt="" class="card-image">
+                    <h3>Dining</h3>
+                </div>
+                <div class="card-items">
+                    <img src="upload/browse_image_two.svg" alt="" class="card-image">
+                    <h3>Living</h3>
+                </div>
+                <div class="card-items"> 
+                    <img src="upload/browse_image_three.svg" alt="" class="card-image">
+                    <h3>Bedroom</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="product-section">
+            <h2>Our Products</h2>
+            <div class="product-container"> </div>
+            <button class="home-show-more-btn">Show More</button>
+        </section>
+            
+        <section class="inspiration">
+            <div class="inspiration-header">
+                <h3>50+ Beautiful rooms<br> inspiration</h3>
+                <p>Our designer already made a lot of beautiful <br> prototype of rooms that inspire you.</p>
+                <a href=""><button>Explore More</button></a>
+            </div>
+
+            <div class="craousel-container swiper">
+                <div class="swiper-wrapper">
+                    <div class="craousel-item swiper-slide">
+                        <img src="upload/craousel_image one.svg" alt="">
+                        <div class="craousel-heading">
+                            <div class="craousel-content">
+                                <p>01 --- Bed Room</p>
+                                <h4>Inner Peace</h4>
+                            </div>
+                            <a href="shop.html" class="arrow_button"><img src="upload/arrow_button.png" alt="arrow_button" ></a>
+                        </div>
+                    </div>
+                    <div class="craousel-item swiper-slide">
+                        <img src="upload/craousel_image one.svg" alt="">
+                        <div class="craousel-heading">
+                            <div class="craousel-content">
+                                <p>02 --- Bed Room</p>
+                                <h4>Inner Peace</h4>
+                            </div>
+                            <a href="shop.html" class="arrow_button"><img src="upload/arrow_button.png" alt="arrow_button" ></a>
+                        </div>
+                    </div>
+                    <div class="craousel-item swiper-slide">
+                        <img src="upload/craousel_image one.svg" alt="">
+                        <div class="craousel-heading">
+                            <div class="craousel-content">
+                                <p>03 --- Bed Room</p>
+                                <h4>Inner Peace</h4>
+                            </div>
+                            <a href="shop.html" class="arrow_button"><img src="upload/arrow_button.png" alt="arrow_button" ></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+
+                <div class="prev-button">
+                    <img src="upload/next button.png" alt="prev-button" class="prev-button">
+                </div>
+                    
+                <div class="next-button"></div>
+                    <img src="upload/next button.png" alt="next-button" class="next-button">
+                </div>
+            </div>
+        </section>
+        
+        <section class="decoration">
+            <p>Share your setup with</p>
+            <h3>#FurnioFurniture</h3>
+            <div class="galery-container">
+                <div class="left-grid">
+                    <img src="upload/Rectangle 36.svg" alt="">
+                    <img src="upload/Rectangle 37.svg" alt="">
+                    <img src="upload/Rectangle 39.svg" alt="">
+                    <img src="upload/Rectangle 38.svg" alt="">
+                </div>
+                <div class="mid-grid">
+                    <img src="upload/Rectangle 40.svg" alt="">
+                </div>
+                <div class="right-grid">
+                    <img src="upload/Rectangle 43.svg" alt="">
+                    <img src="upload/Rectangle 45.svg" alt="">
+                    <img src="upload/Rectangle 41.svg" alt="">
+                    <img src="upload/Rectangle 44.svg" alt="">
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="common footer">
+        <hr>
+        <div class="footer-container">
+            <div class="footer-items">
+                <div class="footer-logo">
+                    <h3>FURNIO.</h3>
+                    <p>400 University Drive Suite 200 Coral Gables, <br>Fl3314 USA </p>
+                </div>
+                <div class="footer-nav-links">
+                    <p>Links</p>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <a href=""><p>Help</p></a>
+                    <a href=""><p>Payment Options</p></a>
+                    <a href=""><p>Returns</p></a>
+                    <a href=""><p>Privacy Policies</p></a>
+                </div>
+                <div class="footer-newsletter">
+                    <a href=""><p>Newsletter</p></a>
+                    <div>
+                        <input type="email" placeholder="Enter your email"> SUBSCRIBE
+                    </div>
+                </div>
+            </div><br>
+            <div class="footer-comp-rights">
+                <hr>
+                <p>2025 © FURNIO. All rights reserved.</p>
+            </div>
+        </div>
+        
+    </footer>
+</body>
+</html>

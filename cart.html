@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/pages/cart.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="js/cart.js"></script>
+    <title>FURNIO</title>
+    
+    <style>
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #B88E2F;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            font-size: 12px;
+            text-align: center;
+            line-height: 18px;
+        }
+        .side-nav a {
+            position: relative;
+            display: inline-block;
+        }
+        .quantity input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+        .remove-item {
+            color: #B88E2F;
+            cursor: pointer;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar common"> 
+        <img class="logo " src="upload/logo.svg" width="185px" height="41px"></img>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="side-nav">
+            <a href=""><img src="upload/icons/search.svg" alt="search-icon"></a>
+            <a href="cart.html">
+                <img src="upload/icons/cart.svg" alt="cart-icon">
+                <span class="cart-counter">0</span>
+            </a>
+        </div>
+    </nav>
+    
+    <div class="cart_banner-conatiner">
+        <img src="upload/cart_banner.svg" alt="cart_banner_with_navigation" class="cart_banner">
+    </div>
+
+    <div class="checkout-container">
+        <div class="quantity">
+            <table id="cart-table">
+                <tr>
+                    <th></th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="checkout">
+            <div>
+                <h2 class="checkout-heading">CART TOTALS</h2>
+                <div class="subtotal">
+                    <p>Subtotal:</p>
+                    <p id="cart-subtotal">$0.00</p>
+                </div>
+                <div class="total-amount">
+                    <p>Total:</p>
+                    <p id="cart-total">$0.00</p>
+                </div>
+                <button type="button" class="checkout-btn" role="button">Check Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartTable = document.getElementById('cart-table');
+            const subtotalElement = document.getElementById('cart-subtotal');
+            const totalElement = document.getElementById('cart-total');
+
+            function updateCartDisplay(items) {
+                // Clear existing rows except header
+                const headerRow = cartTable.rows[0];
+                cartTable.innerHTML = '';
+                cartTable.appendChild(headerRow);
+
+                if (!items || items.length === 0) {
+                    const row = cartTable.insertRow();
+                    row.innerHTML = `
+                        <td colspan="6" style="text-align: center; padding: 20px;">
+                            Your cart is empty. <a href="shop.html">Continue shopping</a>
+                        </td>
+                    `;
+                    subtotalElement.textContent = '$0.00';
+                    totalElement.textContent = '$0.00';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const row = cartTable.insertRow();
+                    const subtotal = item.price * item.quantity;
+                    
+                    row.innerHTML = `
+                        <td>
+                            <img src="upload/products/${item.type}.webp" alt="${item.name}" width="105px" height="105px">
+                        </td>
+                        <td>${item.name}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>
+                            <input type="number" value="${item.quantity}" min="1" max="10" 
+                                oninput="if(this.value > 10) this.value = 10; if(this.value < 1) this.value = 1;"
+                                onchange="cart.updateQuantity('${item.name}', this.value);">
+                        </td>
+                        <td>$${subtotal.toFixed(2)}</td>
+                        <td>
+                            <span class="remove-item" onclick="cart.removeItem('${item.name}');">✕</span>
+                        </td>
+                    `;
+                });
+
+                const total = cart.getTotal();
+                subtotalElement.textContent = `$${total.toFixed(2)}`;
+                totalElement.textContent = `$${total.toFixed(2)}`;
+            }
+
+            // Register the display update function as an observer
+            cart.addObserver(updateCartDisplay);
+
+            // Initial display
+            updateCartDisplay(cart.items);
+        });
+    </script>
+
+    <img src="upload/common_information.svg" alt="" class="common_banner">
+
+
+    <footer class="common footer">
+        <div class="footer-container">
+            <div class="footer-items">
+                <div class="footer-logo">
+                    <h3>FURNIO.</h3>
+                    <p>400 University Drive Suite 200 Coral Gables, <br>Fl3314 USA </p>
+                </div>
+                <div class="footer-nav-links">
+                    <p>Links</p>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <a href=""><p>Help</p></a>
+                    <a href=""><p>Payment Options</p></a>
+                    <a href=""><p>Returns</p></a>
+                    <a href=""><p>Privacy Policies</p></a>
+                </div>
+                <div class="footer-newsletter">
+                    <a href=""><p>Newsletter</p></a>
+                    <div>
+                        <input type="email" placeholder="Enter your email"> SUBSCRIBE
+                    </div>
+                </div>
+            </div><br>
+            <div class="footer-comp-rights">
+                <hr>
+                <p>2025 © FURNIO. All rights reserved.</p>
+            </div>
+        </div>
+        
+    </footer>
+</body>
+</html>

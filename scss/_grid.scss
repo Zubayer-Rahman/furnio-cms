@@ -1,0 +1,45 @@
+.container {
+  max-width: 100%;
+  width: 1400px;
+  margin: 0 auto;
+  padding-right: ($gutter / 2);
+  padding-left: ($gutter / 2);
+  &-fluid {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: ($gutter / -2);
+  margin-left: ($gutter / -2);
+}
+div[class*="col-"] {
+  position: relative;
+  min-height: 1px;
+  padding-right: ($gutter / 2);
+  padding-left: ($gutter / 2);
+}
+@for $i from 1 through $grids {
+  .col-#{$i} {
+    flex: 0 0 (100 / ($grids / $i)) * 1%;
+    max-width: (100 / ($grids / $i)) * 1%;
+  }
+}
+@media screen and (max-width: ($grid-sm * 1px)) {
+  div[class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > div[class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

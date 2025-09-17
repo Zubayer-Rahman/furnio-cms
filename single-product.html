@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/pages/single-product.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="js/cart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>FURNIO</title>
+
+    <style>
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #B88E2F;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: none;
+            font-size: 12px;
+            text-align: center;
+            line-height: 18px;
+        }
+        .side-nav a {
+            position: relative;
+            display: inline-block;
+        }
+        .product-quantity-input {
+            width: 100px;
+            padding: 10px;
+            margin-right: 15px;
+            border: 1px solid #9F9F9F;
+            border-radius: 4px;
+        }
+        .success-message {
+            color: #28a745;
+            margin-top: 10px;
+            display: none;
+            animation: fadeOut 2s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(location.search);
+            const id = urlParams.get('id');
+
+            const titleEl = document.querySelector('.single-product-title');
+            const priceEl = document.querySelector('.single-product-price');
+            const imageEl = document.querySelector('.single-product-image');
+            const categoryEl = document.querySelector('.single-product-category');
+
+            function populate(item) {
+                if (!item) return;
+                titleEl.innerText = item.name || 'Unknown';
+                priceEl.innerText = '$' + (parseFloat(item.price||0).toFixed(2));
+                imageEl.src = item.image || 'upload/products/default.png';
+                categoryEl.innerText = item.category || 'General';
+                // update add-to-cart button usage: set dataset
+                window.currentProduct = item;
+            }
+
+            if (id) {
+                fetch('api/get_product.php?id=' + encodeURIComponent(id))
+                .then(r => r.json())
+                .then(item => {
+                    if (item && !item.error) populate(item);
+                    else {
+                    // fallback to localStorage
+                    const lsName = localStorage.getItem('itemName');
+                    if (lsName) {
+                        populate({
+                        name: lsName,
+                        image: localStorage.getItem('itemImage'),
+                        category: localStorage.getItem('itemCategory'),
+                        price: parseFloat((localStorage.getItem('itemPrice')||'').replace('$','')) || 0
+                        });
+                    }
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
+            } else {
+                // fallback to localStorage as before
+                const lsName = localStorage.getItem('itemName');
+                if (lsName) {
+                populate({
+                    name: lsName,
+                    image: localStorage.getItem('itemImage'),
+                    category: localStorage.getItem('itemCategory'),
+                    price: parseFloat((localStorage.getItem('itemPrice')||'').replace('$','')) || 0
+                });
+                }
+            }
+
+            // Add to cart event (uses your existing cart.addItem)
+            const addToCartButton = document.querySelector('.add-to-cart');
+            const quantityInput = document.querySelector('.product-quantity-input');
+            addToCartButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const qty = parseInt(quantityInput.value) || 1;
+                const p = window.currentProduct || {};
+                cart.addItem({ type: p.slug || p.name, name: p.name, category: p.category, price: parseFloat(p.price||0) }, qty);
+                // optional success message...
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <nav class="navbar common"> 
+        <img class="logo " src="upload/logo.svg" width="185px" height="41px"></img>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="side-nav">
+            <a href=""><img src="upload/icons/search.svg" alt="search-icon"></a>
+            <a href="cart.html">
+                <img src="upload/icons/cart.svg" alt="cart-icon">
+                <span class="cart-counter">0</span>
+            </a>
+        </div>
+    </nav>
+<br>    
+<br>
+    <div class="navigator">
+        <p>Your Wished Product!</p>
+    </div>
+
+    <div class="single-product">
+        <div class="product-container">
+            <div class="product-image">
+                <img class="single-product-image" src="" alt="" width="423px" height="500px" >
+            </div>
+            <div class="product-details">
+                <h1 class="single-product-title"></h1>
+                <p class="single-product-category"></p>
+                <p class="single-product-price"></p>
+                <p class="single-product-short_description">A stylish and comfortable modern that fits perfectly in any living room.</p>
+                <div class="single-product-size">
+                    <p>Size</p>
+                    <div class="size-options">
+                        <button type="button" class="size-option">S</button>
+                        <button type="button" class="size-option">M</button>
+                        <button type="button" class="size-option">L</button>
+                        <button type="button" class="size-option">XL</button>
+                    </div>
+                </div>
+                <div class="single-product-color">
+                    <p>color</p>
+                    <div class="color-options">
+                        <button class="color-option" style="background-color: #816DFA;"></button>
+                        <button class="color-option" style="background-color: #ebe2e2;"></button>
+                        <button class="color-option" style="background-color: #B88E2F;"></button>
+                        <button class="color-option" style="background-color: #000;"></button>
+                    </div>
+                </div>
+                <div class="product-add-quantity">
+                    <input name="quantity" type="number" value="1" min="1" max="10" class="product-quantity-input">
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <p for="quantity" style="font-size: 13px;">*Note: You can order up to 10 at once!</p>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="single-product-full_description">
+        <h2>Product Description</h2>
+        <p>This modern sofa is designed with both style and comfort in mind. Its sleek lines and premium leather upholstery make it a perfect addition to any contemporary living space. The plush cushions provide exceptional comfort, making it ideal for lounging or entertaining guests.</p>
+    </div> -->
+
+    <footer class="common footer">
+        <div class="footer-container">
+            <div class="footer-items">
+                <div class="footer-logo">
+                    <h3>FURNIO.</h3>
+                    <p>400 University Drive Suite 200 Coral Gables, <br>Fl3314 USA </p>
+                </div>
+                <div class="footer-nav-links">
+                    <p>Links</p>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <a href=""><p>Help</p></a>
+                    <a href=""><p>Payment Options</p></a>
+                    <a href=""><p>Returns</p></a>
+                    <a href=""><p>Privacy Policies</p></a>
+                </div>
+                <div class="footer-newsletter">
+                    <a href=""><p>Newsletter</p></a>
+                    <div>
+                        <input type="email" placeholder="Enter your email"> SUBSCRIBE
+                    </div>
+                </div>
+            </div><br>
+            <div class="footer-comp-rights">
+                <hr>
+                <p>2025 © FURNIO. All rights reserved.</p>
+            </div>
+        </div>
+        
+    </footer>
+    
+</body>
+</html>
