@@ -1,0 +1,141 @@
+/* Basic Reset and Font */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f4f7f9;
+    display: flex;
+}
+
+.dashboard-container {
+    display: flex;
+    width: 100%;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 200px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ecf0f1;
+    border-bottom: 1px solid #34495e;
+    padding-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #34495e;
+    color: #fff;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+}
+
+.main-content {
+    margin-left: 250px;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Table styling */
+.section-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.section-container th, .section-container td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.section-container th {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+
+.section-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.section-container tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Actions link styling */
+.action-link {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-link {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.edit-link:hover {
+    background-color: #2980b9;
+}
+
+.delete-link {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.delete-link:hover {
+    background-color: #c0392b;
+}
+
+/* Add New Product button styling */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #2ecc71;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: #27ae60;
+}
+
+.button i {
+    margin-right: 8px;
+}

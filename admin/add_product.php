@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = mysqli_prepare($conn, "INSERT INTO products (name, slug, short_description, description, price, image, category_id, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt, 'ssssdssi', $name, $slug, $short, $desc, $price, $imagePath, $category_id, $stock);
     if (mysqli_stmt_execute($stmt)) {
-        $msg = 'Product added';
+        $msg = 'Product added successfully!';
     } else {
         $msg = 'Error: ' . mysqli_error($conn);
     }
@@ -39,87 +39,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>Add Product</title></head>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 600px;
-        margin: 20px auto;
-        padding: 0 10px;
-    }
-    h1{
-      margin-bottom: 20px;
-      font-weight: 600;
-      font-size: 32px;
-      color: #333;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      border-bottom: 2px solid #007BFF;
-      padding-bottom: 10px;
-    }
-    p{
-      background-color: aliceblue;
-      padding: 10px;
-      border-radius: 10px;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-
-    p a{
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: 600;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-    label {
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
-    input, textarea, select, button {
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    button {
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-</style>
+<head>
+  <meta charset="utf-8">
+  <title>Add Product</title>
+  <link rel="stylesheet" href="add_products.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
 
 <body>
-  <h1>Add Product</h1>
-  <?php if ($msg) echo "<p>$msg</p>"; ?>
-  <form method="post" enctype="multipart/form-data">
-    <label>Name: <input name="name" required></label><br>
-    <label>Short description: <input name="short_description"></label><br>
-    <label>Description: <textarea name="description"></textarea></label><br>
-    <label>Price: <input name="price" type="number" step="0.01" required></label><br>
-    <label>Stock: <input name="stock" type="number" value="0"></label><br>
-    <label>Category:
-      <select name="category_id">
-        <option value="">--none--</option>
-        <?php while ($c = mysqli_fetch_assoc($catRes)) : ?>
-          <option value="<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['name']); ?></option>
-        <?php endwhile; ?>
-      </select>
-    </label><br>
-    <label>Image: <input name="image" type="file" accept="image/*"></label><br>
-    <button type="submit">Add</button>
-  </form>
-  <p><a href="products.php">Back to products</a></p>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="active"><a href="products.php"><i class="fas fa-box"></i> Manage Products</a></li>
+            <li><a href="categories.php"><i class="fas fa-tags"></i> Manage Categories</a></li>
+            <li><a href="orders.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="top-bar">
+          <h1>Add New Product</h1>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="section-container">
+          <?php if ($msg): ?>
+            <div class="alert <?php echo (strpos($msg, 'Error') !== false) ? 'alert-danger' : 'alert-success'; ?>">
+                <?php echo htmlspecialchars($msg); ?>
+            </div>
+          <?php endif; ?>
+
+          <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input name="name" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="short_description">Short Description:</label>
+                <textarea name="short_description" id="short_description" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input name="price" id="price" type="number" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input name="stock" id="stock" type="number" value="0">
+            </div>
+            <div class="form-group">
+                <label for="category_id">Category:</label>
+                <select name="category_id" id="category_id">
+                  <option value="">--none--</option>
+                  <?php while ($c = mysqli_fetch_assoc($catRes)) : ?>
+                    <option value="<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['name']); ?></option>
+                  <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input name="image" id="image" type="file" accept="image/*">
+            </div>
+            <button type="submit" class="button"><i class="fas fa-plus"></i> Add Product</button>
+          </form>
+          <p class="mt-20"><a href="products.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to products</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+<?php mysqli_close($conn); ?>
