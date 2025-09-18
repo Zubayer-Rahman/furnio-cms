@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         align-items: center;
     }
 
-    form{
+    form {
         width: 100%;
         background-color: aliceblue;
         padding: 30px;
@@ -59,15 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         margin: 10px 0;
         padding: 8px;
         width: 100%;
+        height: 45px;
+        border: none;
+        border-radius: 12px;
         box-sizing: border-box;
+    }
+    input:focus {
+        outline: 1px solid rgba(0, 123, 255, 0.5);
     }
 
     button {
-        padding: 10px 15px;
+        padding: 15px 20px;
         background-color: #007BFF;
         color: white;
         border: none;
         border-radius: 12px;
+        font-size: 14px;
+        font-weight: bold;
     }
 </style>
 
