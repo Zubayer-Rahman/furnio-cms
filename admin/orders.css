@@ -62,7 +62,7 @@ body {
 
 /* Main Content Area */
 .main-content {
-    margin-left: 280px;
+    margin-left: 200px;
     flex-grow: 1;
     padding: 20px;
 }

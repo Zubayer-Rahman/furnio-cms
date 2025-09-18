@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     body {
         font-family: Arial, sans-serif;
         max-width: 400px;
-        margin: 300px auto;
+        margin: 100px auto;
         display: flex;
         flex-direction: column;
         align-items: center;

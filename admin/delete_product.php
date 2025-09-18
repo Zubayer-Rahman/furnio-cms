@@ -8,7 +8,8 @@ if ($id) {
     $row = mysqli_fetch_assoc($res);
     if ($row && $row['image']) {
         $file = __DIR__ . '/../' . $row['image'];
-        if (file_exists($file)) @unlink($file);
+        if (file_exists($file))
+            @unlink($file);
     }
     mysqli_query($conn, "DELETE FROM products WHERE id = $id");
 }
