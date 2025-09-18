@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = mysqli_prepare($conn, "INSERT INTO products (name, slug, short_description, description, price, image, category_id, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     mysqli_stmt_bind_param($stmt, 'ssssdssi', $name, $slug, $short, $desc, $price, $imagePath, $category_id, $stock);
+
     if (mysqli_stmt_execute($stmt)) {
         $msg = 'Product added successfully!';
     } else {
@@ -36,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     mysqli_stmt_close($stmt);
 }
+
 ?>
 <!doctype html>
 <html>

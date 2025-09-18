@@ -1,3 +1,6 @@
+#installation of the CMS
+<!-- http://localhost/furnio-cms/install.php -->
+
 <?php
 // install.php - run once
 $rootUser = 'root';      // default XAMPP

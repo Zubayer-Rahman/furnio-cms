@@ -1,6 +1,7 @@
 <?php
 require_once 'auth.php';
 require_once __DIR__ . '/../db.php';
+
 $id = intval($_GET['id'] ?? 0);
 if (!$id) { header('Location: products.php'); exit; }
 
