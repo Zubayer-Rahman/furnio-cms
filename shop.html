@@ -98,14 +98,15 @@
         fetch('api/get_products.php')
             .then(r => r.json())
             .then(data => {
-            allProducts = data.products || [];
-            displayProducts(allProducts);
-            updatePagination(allProducts);
+                // If data is an array, use it directly. Otherwise, check for data.products.
+                allProducts = Array.isArray(data) ? data : data.products || [];
+                displayProducts(allProducts);
+                updatePagination(allProducts);
             })
             .catch(err => {
-            console.error('Error loading products', err);
-            productContent.innerHTML = '<p>Error loading products</p>';
-        });
+                console.error('Error loading products', err);
+                productContent.innerHTML = '<p>Error loading products</p>';
+            });
     });
 </script>
 

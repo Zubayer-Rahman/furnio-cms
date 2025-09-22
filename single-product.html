@@ -82,18 +82,24 @@
 
             // Populate the page with product data
             function populate(item) {
+                const productContainer = document.querySelector('.single-product-container'); // Get container here
                 if (!item || !item.name) {
+                    if (productContainer) productContainer.style.display = 'none';
                     return showErrorMessage('Product data is missing or invalid.');
                 }
+
+                // Show the container on success
+                if (productContainer) productContainer.style.display = 'block'; // Or 'flex', depending on your CSS
 
                 titleEl.textContent = item.name;
                 priceEl.textContent = '$' + (parseFloat(item.price || 0).toFixed(2));
                 imageEl.src = item.image || '../uploads/default.png';
                 categoryEl.textContent = item.category || 'General';
 
-                window.currentProduct = item; // Store the product data for the cart
+                window.currentProduct = item;
                 hideLoadingIndicator();
             }
+
             
             // Initial state: show loading and hide error message
             if (loadingIndicatorEl) loadingIndicatorEl.style.display = 'block';
