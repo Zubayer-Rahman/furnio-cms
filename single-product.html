@@ -58,61 +58,89 @@
             const priceEl = document.querySelector('.single-product-price');
             const imageEl = document.querySelector('.single-product-image');
             const categoryEl = document.querySelector('.single-product-category');
+            const errorMessageEl = document.getElementById('error-message');
+            const loadingIndicatorEl = document.getElementById('loading-indicator');
 
-            function populate(item) {
-                if (!item) return;
-                titleEl.innerText = item.name || 'Unknown';
-                priceEl.innerText = '$' + (parseFloat(item.price||0).toFixed(2));
-                imageEl.src = item.image || 'upload/products/default.png';
-                categoryEl.innerText = item.category || 'General';
-                // update add-to-cart button usage: set dataset
-                window.currentProduct = item;
+            // Display a message and hide content
+            function showErrorMessage(message) {
+                if (errorMessageEl) {
+                    errorMessageEl.textContent = message;
+                    errorMessageEl.style.display = 'block';
+                }
+                // Hide product elements to show the error clearly
+                const productContainer = document.querySelector('.single-product-container');
+                if (productContainer) productContainer.style.display = 'none';
+                hideLoadingIndicator();
             }
 
-            if (id) {
-                fetch('api/get_product.php?id=' + encodeURIComponent(id))
-                .then(r => r.json())
-                .then(item => {
-                    if (item && !item.error) populate(item);
-                    else {
-                    // fallback to localStorage
-                    const lsName = localStorage.getItem('itemName');
-                    if (lsName) {
-                        populate({
-                        name: lsName,
-                        image: localStorage.getItem('itemImage'),
-                        category: localStorage.getItem('itemCategory'),
-                        price: parseFloat((localStorage.getItem('itemPrice')||'').replace('$','')) || 0
-                        });
-                    }
-                    }
-                }).catch(err => {
-                    console.error(err);
-                });
-            } else {
-                // fallback to localStorage as before
-                const lsName = localStorage.getItem('itemName');
-                if (lsName) {
-                populate({
-                    name: lsName,
-                    image: localStorage.getItem('itemImage'),
-                    category: localStorage.getItem('itemCategory'),
-                    price: parseFloat((localStorage.getItem('itemPrice')||'').replace('$','')) || 0
-                });
+            // Hide the loading indicator
+            function hideLoadingIndicator() {
+                if (loadingIndicatorEl) {
+                    loadingIndicatorEl.style.display = 'none';
                 }
             }
 
-            // Add to cart event (uses your existing cart.addItem)
+            // Populate the page with product data
+            function populate(item) {
+                if (!item || !item.name) {
+                    return showErrorMessage('Product data is missing or invalid.');
+                }
+
+                titleEl.textContent = item.name;
+                priceEl.textContent = '$' + (parseFloat(item.price || 0).toFixed(2));
+                imageEl.src = item.image || '../uploads/default.png';
+                categoryEl.textContent = item.category || 'General';
+
+                window.currentProduct = item; // Store the product data for the cart
+                hideLoadingIndicator();
+            }
+            
+            // Initial state: show loading and hide error message
+            if (loadingIndicatorEl) loadingIndicatorEl.style.display = 'block';
+            if (errorMessageEl) errorMessageEl.style.display = 'none';
+
+            if (id) {
+                fetch(`api/get_products.php?id=${encodeURIComponent(id)}`)
+                    .then(r => {
+                        if (!r.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return r.json();
+                    })
+                    .then(item => {
+                        if (item && item.error) {
+                            throw new Error(item.error);
+                        }
+                        populate(item);
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        showErrorMessage('Failed to load product details. Please try again later.');
+                    });
+            } else {
+                showErrorMessage('No product ID specified in the URL.');
+            }
+
+            // Add to cart event
             const addToCartButton = document.querySelector('.add-to-cart');
             const quantityInput = document.querySelector('.product-quantity-input');
-            addToCartButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                const qty = parseInt(quantityInput.value) || 1;
-                const p = window.currentProduct || {};
-                cart.addItem({ type: p.slug || p.name, name: p.name, category: p.category, price: parseFloat(p.price||0) }, qty);
-                // optional success message...
-            });
+            if (addToCartButton && quantityInput) {
+                addToCartButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const qty = parseInt(quantityInput.value) || 1;
+                    const p = window.currentProduct;
+                    if (p && p.name) {
+                        // Assume cart.addItem is a global function
+                        cart.addItem({ type: p.slug || p.name, name: p.name, category: p.category, price: parseFloat(p.price || 0) }, qty);
+                        // Optional success message or animation
+                        alert('Product added to cart!');
+                    } else {
+                        showErrorMessage('Cannot add to cart: Product data is missing.');
+                    }
+                });
+            }
         });
+
     </script>
 
 </head>
